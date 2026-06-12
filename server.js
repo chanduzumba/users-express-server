@@ -13,7 +13,7 @@ app.use(express.json())
 
 //application level middleware to logging incoming requests
 app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url} ${req.statusCode}`)
+    console.log(`${req.method} ${req.url} ${res.statusCode}`)
     next()
 })
 
