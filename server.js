@@ -12,8 +12,12 @@ app.listen(5100, () => {
 app.use(express.json())
 
 //application level middleware to logging incoming requests
+// application-level middleware to log incoming requests after response finishes
 app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url} ${res.statusCode}`)
+    // Log once the response has been sent so `res.statusCode` is accurate
+    res.on('finish', () => {
+        console.log(`${req.method} ${req.url} ${res.statusCode}`)
+    })
     next()
 })
 
@@ -21,7 +25,7 @@ app.use((req, res, next) => {
 const router = express.Router()
 
 //app level middleware to use the router
-app.use(router)
+app.use("/", router)
 
 function validateUserData(req, res, next) {
     const { firstName, lastName, hobby } = req.body //get user data from request body
