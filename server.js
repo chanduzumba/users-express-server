@@ -27,6 +27,7 @@ const router = express.Router()
 //app level middleware to use the router
 app.use("/", router)
 
+//middleware function to validate req data before sending response
 function validateUserData(req, res, next) {
     const { firstName, lastName, hobby } = req.body //get user data from request body
     
@@ -81,7 +82,7 @@ router.get('/users/:id', (req, res) => {
     }
 })
 
-//POST /user - create a new user
+//POST /user - create a new user with validate middleware as second param to process req before sending response
 router.post('/user', validateUserData, (req, res) => {
     const { firstName, lastName, hobby } = req.body //get user data from request body
     //create a new user object with a unique id and the provided data
@@ -95,7 +96,7 @@ router.post('/user', validateUserData, (req, res) => {
     res.status(201).json(newUser) //return the created user as JSON response
 })
 
-//PUT /user/:id - update user by id    
+//PUT /user/:id - update user by id with validate middleware as second param to process req before sending response
 router.put('/user/:id', validateUserData, (req, res) => {
     const userId = req.params.id //get user id from request parameters
     const { firstName, lastName, hobby } = req.body //get updated user data from request body
